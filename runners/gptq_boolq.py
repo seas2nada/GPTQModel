@@ -12,13 +12,13 @@ def format_boolq(ex):
     )
 
 model_id = "meta-llama/Llama-2-7b-hf"
-quant_path = "outputs/Llama-2-7b-hf-gptqmodel-boolq-3bit"
+quant_path = "outputs/Llama-2-7b-hf-gptqmodel-boolq-4bit"
 
 ds = load_dataset("boolq", split="train").select(range(128))
 ds = ds.map(lambda ex: {"text": format_boolq(ex)}, remove_columns=ds.column_names)
 calibration_dataset = ds["text"]  # list[str]
 
-quant_config = QuantizeConfig(bits=3, group_size=128)
+quant_config = QuantizeConfig(bits=4, group_size=128)
 
 model = GPTQModel.load(model_id, quant_config)
 

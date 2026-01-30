@@ -613,6 +613,18 @@ class GPTQModel:
             if "groups" in results:
                 print(make_table(results, "groups"))
             print('--------lm_eval Result End---------')
+            
+            if output_path:
+                import json
+                if os.path.isdir(output_path):
+                     save_file = os.path.join(output_path, "lm_eval_result.json")
+                else:
+                     save_file = output_path
+                
+                with open(save_file, "w") as f:
+                    json.dump(results, f, indent=4)
+                log.info(f"LM-EVAL: Results saved to {save_file}")
+            
             return results
         elif framework == EVAL.EVALPLUS:
             for task in tasks:
